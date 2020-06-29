@@ -1,11 +1,11 @@
 <template>
   <div>
-    <b-form @submit.prevent="register" @reset="onReset">
+    <b-form @submit.prevent="register" @reset="onReset" v-if="show">
       <!--Name-->
       <b-form-group id="input-group-2" label="Nombre:" label-for="input-2">
         <b-form-input
           id="input-2"
-          v-model="form.name"
+          v-model="name"
           required
           placeholder="Ingresa tu Nombre"
         ></b-form-input>
@@ -19,7 +19,7 @@
       >
       <b-form-input
         id="input-1"
-        v-model="form.email"
+        v-model="email"
         type="email"
         required
         placeholder="Ingresa tu Mail"
@@ -33,7 +33,7 @@
       >
       <b-input
         id="text-password"
-        v-model="form.password"
+        v-model="password"
         aria-describedby="password-help-block"
         type="password"
         required
@@ -44,38 +44,51 @@
       </b-form-text>
       </b-form-group>
       
-      <b-button type="submit" variant="primary">Submit</b-button>
+      <b-button type="submit" variant="primary">Registrarse</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
+    <div>
+      <b-alert show variant="danger" v-if="error">{{ error }}</b-alert>
+    </div>
   </div>
 </template>
 
 <script>
+import db from '../../config/firebase'
+import firebase from 'firebase'
   export default {
     data (){
       return {
-        form: {
-          name: '',
-          email: '',
-          password: '',
-          error: ''
-        }
+        name: '',
+        email: '',
+        password: '',
+        show: true,
+        error: '',
+        db
       }
     },
     methods: {
       register(){
-        if( this.form.name && this.form.email && this.form.password){
-          //send form
-        }else{
+        if( this.name && this.email && this.password){
+          firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+          .then(user => {
+            console.log(user)
+            this.name = '';
+            this.email = '';
+            this.password = '';
+          }).catch(err => {
+            this.error = err.message
+          })
+        }else {
           this.error = 'Faltan campos por rellenar'
         }
       },
       onReset(evt) {
         evt.preventDefault()
         // Reset our form values
-        this.form.email = '';
-        this.form.name = '';
-        this.form.password = '';
+        this.email = '';
+        this.name = '';
+        this.password = '';
         // Trick to reset/clear native browser form validation state
         this.$nextTick(() => {
           this.show = true

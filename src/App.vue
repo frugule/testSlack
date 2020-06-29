@@ -2,7 +2,10 @@
   <div>
     <nav-bar></nav-bar>
     <router-view></router-view>
+    <div>
+
     <Footer></Footer>
+    </div>
   </div>
 </template>
 
