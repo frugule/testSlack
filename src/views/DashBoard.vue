@@ -1,12 +1,15 @@
 <template>
   <div>
-    soy una tabla
+    soy un dashboar indefenso 
   </div>
 </template>
 
 <script>
-export default {
 
+export default {
+  components:{
+    
+  }
 }
 </script>
 

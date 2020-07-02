@@ -41,8 +41,8 @@
 </template>
 
 <script>
-import db from '../../config/firebase'
-import firebase from 'firebase'
+//import db from '../../config/firebase'
+import firebase from 'firebase';
   export default {
     data (){
       return {
@@ -50,7 +50,6 @@ import firebase from 'firebase'
         password: '',
         show: true,
         error: '',
-        db
       }
     },
     methods: {
